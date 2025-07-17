@@ -1,49 +1,82 @@
-const display = document.getElementById('display');
-const startStopBtn = document.getElementById('startStopBtn');
-const resetBtn = document.getElementById('resetBtn');
+document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('stopwatch-grid');
+    const numStopwatches = 20;
 
-let startTime;
-let updatedTime;
-let difference;
-let tInterval;
-let running = false;
+    const createStopwatch = () => {
+        // --- State for this instance ---
+        let startTime;
+        let elapsedTime = 0;
+        let timerInterval;
+        let running = false;
 
-function startStop() {
-    if (!running) {
-        startTime = new Date().getTime();
-        tInterval = setInterval(updateTime, 1);
-        startStopBtn.innerHTML = "Stop";
-        running = true;
-    } else {
-        clearInterval(tInterval);
-        startStopBtn.innerHTML = "Start";
-        running = false;
+        // --- Create DOM elements ---
+        const stopwatchEl = document.createElement('div');
+        stopwatchEl.className = 'stopwatch';
+
+        const displayEl = document.createElement('div');
+        displayEl.className = 'display';
+        displayEl.textContent = '00:00.00';
+
+        const buttonsEl = document.createElement('div');
+        buttonsEl.className = 'buttons';
+
+        const startStopBtn = document.createElement('button');
+        startStopBtn.textContent = 'Start';
+
+        const resetBtn = document.createElement('button');
+        resetBtn.textContent = 'Reset';
+
+        buttonsEl.appendChild(startStopBtn);
+        buttonsEl.appendChild(resetBtn);
+        stopwatchEl.appendChild(displayEl);
+        stopwatchEl.appendChild(buttonsEl);
+
+        // --- Functions for this instance ---
+        const formatTime = (time) => {
+            const minutes = String(Math.floor((time / (1000 * 60)) % 60)).padStart(2, '0');
+            const seconds = String(Math.floor((time / 1000) % 60)).padStart(2, '0');
+            const centiseconds = String(Math.floor((time % 1000) / 10)).padStart(2, '0');
+            return `${minutes}:${seconds}.${centiseconds}`;
+        };
+
+        const update = () => {
+            const currentTime = Date.now();
+            elapsedTime = currentTime - startTime;
+            displayEl.textContent = formatTime(elapsedTime);
+        };
+
+        const start = () => {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(update, 10);
+            running = true;
+            startStopBtn.textContent = 'Stop';
+        };
+
+        const stop = () => {
+            clearInterval(timerInterval);
+            running = false;
+            startStopBtn.textContent = 'Start';
+        };
+
+        const reset = () => {
+            clearInterval(timerInterval);
+            running = false;
+            elapsedTime = 0;
+            displayEl.textContent = '00:00.00';
+            startStopBtn.textContent = 'Start';
+        };
+
+        // --- Attach event listeners ---
+        startStopBtn.addEventListener('click', () => {
+            running ? stop() : start();
+        });
+        resetBtn.addEventListener('click', reset);
+
+        return stopwatchEl;
+    };
+
+    // --- Create and append all instances ---
+    for (let i = 0; i < numStopwatches; i++) {
+        grid.appendChild(createStopwatch());
     }
-}
-
-function reset() {
-    clearInterval(tInterval);
-    running = false;
-    startStopBtn.innerHTML = "Start";
-    display.innerHTML = "00:00:00.000";
-}
-
-function updateTime() {
-    updatedTime = new Date().getTime();
-    difference = updatedTime - startTime;
-
-    let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((difference % (1000 * 60)) / 1000);
-    let milliseconds = Math.floor((difference % 1000));
-
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-    milliseconds = (milliseconds < 100) ? (milliseconds < 10 ? "00" + milliseconds : "0" + milliseconds) : milliseconds;
-
-    display.innerHTML = minutes + ":" + seconds + "." + milliseconds;
-}
-
-startStopBtn.addEventListener('click', startStop);
-resetBtn.addEventListener('click', reset);
+});

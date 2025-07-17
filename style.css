@@ -1,49 +1,70 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #1f1f1f; /* Deep charcoal */
+    font-family: 'Cormorant Garamond', serif;
+    overflow: hidden; /* Hide scrollbars */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
     height: 100vh;
-    background-color: #1a1a1a; /* A dark, elegant background */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
+    box-sizing: border-box;
 }
 
 .stopwatch {
-    background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
-    border-radius: 50px;
-    padding: 40px;
-    box-shadow: 20px 20px 60px #121212, 
-                -20px -20px 60px #282828;
-    text-align: center;
+    background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: inset 5px 5px 10px #1f1f1f, 
+                inset -5px -5px 10px #555555;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #1a1a1a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#display {
-    font-size: 4.5em;
-    color: #ffd700; /* Gold color for the text */
-    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
-    margin-bottom: 40px;
+.stopwatch:hover {
+    transform: scale(1.05);
+    box-shadow: inset 5px 5px 15px #1f1f1f, 
+                inset -5px -5px 15px #555555, 
+                0 0 25px rgba(255, 223, 186, 0.1);
+}
+
+.display {
+    font-size: 2.2vw; /* Responsive font size */
+    font-weight: 700;
+    color: #FFDFBA; /* Champagne Gold */
+    text-shadow: 0 0 5px rgba(255, 223, 186, 0.5), 
+                 0 0 10px rgba(255, 223, 186, 0.3);
+    margin-bottom: 15px;
 }
 
 .buttons button {
-    background-color: #ffd700; /* Gold */
-    color: #1a1a1a;
-    border: none;
-    border-radius: 15px;
-    padding: 15px 30px;
-    margin: 0 15px;
-    font-size: 1.2em;
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(145deg, #3e3e3e, #252525);
+    color: #FFDFBA;
+    border: 1px solid #1a1a1a;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 0 5px;
+    font-size: 1vw;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+    transition: all 0.2s ease;
+    box-shadow: 3px 3px 5px #1f1f1f, -3px -3px 5px #4b4b4b;
 }
 
 .buttons button:hover {
-    background-color: #ffec80; /* Lighter gold on hover */
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
-    transform: translateY(-2px);
+    color: #fff;
+    border-color: #FFDFBA;
+    box-shadow: 1px 1px 3px #1f1f1f, -1px -1px 3px #4b4b4b;
 }
 
 .buttons button:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+    background: #2a2a2a;
+    box-shadow: inset 2px 2px 4px #1f1f1f, inset -2px -2px 4px #4b4b4b;
 }
